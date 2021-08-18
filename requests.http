@@ -1,45 +1,72 @@
-###
-
-POST https://api.spacex.land/graphql
+POST http://localhost:8003
 Content-Type: application/json
 X-REQUEST-TYPE: GraphQL
 
-query {
-  launchesPast(limit: 10) {
-    mission_name
-    launch_date_local
-    launch_site {
-      site_name_long
+mutation addUser {
+  register(userInfo: { username: "Matija", password: "password", age: 18 }) {
+    user {
+      username
+      password
+      firstLetterOfUsername
     }
-    links {
-      article_link
-      video_link
-    }
-    rocket {
-      rocket_name
-      first_stage {
-        cores {
-          flight
-          core {
-            reuse_count
-            status
-          }
-        }
-      }
-      second_stage {
-        payloads {
-          payload_type
-          payload_mass_kg
-          payload_mass_lbs
-        }
-      }
-    }
-    ships {
-      name
-      home_port
-      image
+  }
+}
+###
+
+// missing authentication
+POST http://localhost:8003
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation addUser {
+  register(userInfo: { username: "Matija", password: "password", age: 18 }) {
+    user {
+      username
+      password
+      firstLetterOfUsername
     }
   }
 }
 
 ###
+POST http://localhost:8003
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation Login {
+  login(userInfo:{username:"Matija", password:"$2a$10$hWfN7ILpTAQWWKJblUdW9OZan70bWAILV6NgoVyApUa9JFErLgY4O"})
+}
+
+###
+// missing authentication
+POST http://localhost:8003
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+mutation Login {
+  login(userInfo:{username:"", password:"$2a$10$hWfN7ILpTAQWWKJblUdW9OZan70bWAILV6NgoVyApUa9JFErLgY4O"})
+}
+###
+
+POST http://localhost:8003
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+subscription Registration {
+  registrationSuccess {
+    username
+    password
+    admin
+    age
+    id
+  }
+}
+###
+
+POST http://localhost:8003
+Content-Type: application/json
+X-REQUEST-TYPE: GraphQL
+
+subscription LoginSubscription {
+  loginSuccess
+}
